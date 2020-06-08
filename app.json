@@ -1,12 +1,9 @@
 {
   "expo": {
-    "name": "cutetodo",
+    "name": "Cute To Do",
+    "description": "Practicing React, JS, and React Native By Building Cute ToDo App",
     "slug": "cutetodo",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }
