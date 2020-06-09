@@ -12,40 +12,22 @@ import {
 import { AppLoading } from "expo";
 import ToDo from "./ToDo";
 import { render } from "react-dom";
-import { v4 as uuidv4 } from "uuid";
+import uuid from "uuid-random";
 
 const { height, width } = Dimensions.get("window");
-const v4options = {
-  random: [
-    0x10,
-    0x91,
-    0x56,
-    0xbe,
-    0xc4,
-    0xfb,
-    0xc1,
-    0xea,
-    0x71,
-    0xb4,
-    0xef,
-    0xe1,
-    0x67,
-    0x1c,
-    0x58,
-    0x36,
-  ],
-};
 
 export default class App extends React.Component {
   state = {
     newToDo: "",
     loadedToDos: false,
+    toDos: {},
   };
   componentDidMount = () => {
     this._loadToDos();
   };
   render() {
-    const { newToDo, loadedToDos } = this.state;
+    const { newToDo, loadedToDos, toDos } = this.state;
+    console.log(toDos);
     if (!loadedToDos) {
       return <AppLoading />;
     }
@@ -65,7 +47,9 @@ export default class App extends React.Component {
             onSubmitEditing={this._addToDo}
           ></TextInput>
           <ScrollView contentContainerStyle={styles.toDos}>
-            <ToDo text={"Hello I'm To Do"} />
+            {Object.values(toDos).map((toDo) => (
+              <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo} />
+            ))}
           </ScrollView>
         </View>
       </View>
@@ -85,7 +69,7 @@ export default class App extends React.Component {
     const { newToDo } = this.state;
     if (newToDo !== "") {
       this.setState((prevState) => {
-        const ID = uuidv4(v4options);
+        const ID = uuid();
         const newToDoObject = {
           [ID]: {
             id: ID,
@@ -105,6 +89,17 @@ export default class App extends React.Component {
         return { ...newState };
       });
     }
+  };
+  _deleteToDo = (id) => {
+    this.setState((prevState) => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos,
+      };
+      return { ...newState };
+    });
   };
 }
 
